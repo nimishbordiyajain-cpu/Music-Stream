@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burnout Prevention App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <div class="app-header" id="header" style="display: none;">
+            <div class="header-title" id="headerTitle">Home</div>
+            <div class="header-buttons">
+                <button class="header-btn" id="backBtn" style="display: none;">←</button>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="header-btn" id="darkModeBtn">🌙</button>
+                    <button class="header-btn" id="settingsBtn">⚙️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Container -->
+        <div id="notificationContainer" class="notification-container"></div>
+
+        <!-- Home Screen -->
+        <div class="screen home-screen active" id="homeScreen">
+            <div>
+                <h1 class="app-title" id="appTitle">Burnout Guard</h1>
+                <div class="date-badge" id="dateBadge"></div>
+
+                <div class="risk-indicator" id="riskIndicator">
+                    <div class="risk-gauge safe" id="riskGauge">
+                        <span class="risk-gauge-text" id="riskScore">-</span>
+                    </div>
+                    <div class="risk-text">
+                        <div class="risk-label">Burnout Risk</div>
+                        <div class="risk-value" id="riskStatus">—</div>
+                    </div>
+                </div>
+
+                <div class="streak-info">
+                    <div class="streak-icon">🔥</div>
+                    <div class="streak-text">
+                        <div class="streak-number" id="streakCount">0</div>
+                        <div style="color: var(--text-light); font-size: 0.85rem;">days in a row</div>
+                    </div>
+                </div>
+
+                <div class="status-grid">
+                    <div class="status-card" id="morningCard" onclick="app.startRoutine('morning')">
+                        <div class="status-indicator">🌅</div>
+                        <div class="status-label">Morning Routine</div>
+                    </div>
+                    <div class="status-card" id="nightCard" onclick="app.startRoutine('night')">
+                        <div class="status-indicator">🌙</div>
+                        <div class="status-label">Night Routine</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group" style="margin-bottom: 1rem;">
+                <button class="btn-primary" onclick="app.goToDashboard()">View Insights</button>
+            </div>
+        </div>
+
+        <!-- Routine Screen -->
+        <div class="screen routine-screen" id="routineScreen">
+            <div class="breathing-background"></div>
+            <div class="routine-container">
+                <div class="routine-progress" id="progressBar"></div>
+
+                <div class="routine-timer" id="routineTimer">3:45</div>
+
+                <!-- Morning Routine Steps -->
+                <div class="routine-step active" data-routine="morning" data-step="0">
+                    <div class="routine-title">Good morning ☀️</div>
+                    <div class="routine-subtitle" id="greetingDate"></div>
+                    <button class="btn-primary" onclick="app.nextStep()">Start Morning Routine</button>
+                </div>
+
+                <div class="routine-step" data-routine="morning" data-step="1">
+                    <div class="routine-title">How did you sleep?</div>
+                    <div class="input-group">
+                        <div class="slider-container">
+                            <div class="slider-label">Hours slept</div>
+                            <div class="gradient-slider-wrapper">
+                                <input type="range" id="sleepHours" class="gradient-slider" min="4" max="10" value="7" step="0.5">
+                            </div>
+                            <div class="slider-values">
+                                <span>4h</span>
+                                <span class="slider-value" id="sleepHoursValue">7h</span>
+                                <span>10h</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="slider-container">
+                            <div class="slider-label">Sleep quality</div>
+                            <div class="gradient-slider-wrapper">
+                                <input type="range" id="sleepQuality" class="gradient-slider" min="1" max="10" value="6" step="1">
+                            </div>
+                            <div class="slider-values">
+                                <span>Poor</span>
+                                <span class="slider-value" id="sleepQualityValue">6/10</span>
+                                <span>Excellent</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="routine-controls">
+                        <button class="btn-secondary btn-small" onclick="app.prevStep()">Back</button>
+                        <button class="btn-primary btn-small" onclick="app.nextStep()">Next</button>
+                    </div>
+                </div>
+
+                <div class="routine-step" data-routine="morning" data-step="2">
+                    <div class="routine-title">How's your energy?</div>
+                    <div class="input-group">
+                        <div class="slider-container">
+                            <div class="gradient-slider-wrapper">
+                                <input type="range" id="morningEnergy" class="gradient-slider" min="1" max="10" value="5" step="1">
+                            </div>
+                            <div class="slider-values">
+                                <span>Low</span>
+                                <span class="slider-value" id="morningEnergyValue">5/10</span>
+                                <span>High</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="routine-controls">
+                        <button class="btn-secondary btn-small" onclick="app.prevStep()">Back</button>
+                        <button class="btn-primary btn-small" onclick="app.nextStep()">Next</button>
+                    </div>
+                </div>
+
+                <div class="routine-step" data-routine="morning" data-step="3">
+                    <div class="routine-title">How are you feeling?</div>
+                    <div class="input-group">
+                        <div class="slider-container">
+                            <div class="gradient-slider-wrapper">
+                                <input type="range" id="morningMood" class="gradient-slider" min="1" max="10" value="6" step="1">
+                            </div>
+                            <div class="slider-values">
+                                <span>Down</span>
+                                <span class="slider-value" id="morningMoodValue">6/10</span>
+                                <span>Great</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="morningNote" placeholder="Optional note (one line)" maxlength="100">
+                    </div>
+                    <div class="routine-controls">
+                        <button class="btn-secondary btn-small" onclick="app.prevStep()">Back</button>
+                        <button class="btn-primary btn-small" onclick="app.nextStep()">Next</button>
+                    </div>
+                </div>
+
+                <div class="routine-step" data-routine="morning" data-step="4">
+                    <div class="routine-title">One thing to protect today</div>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="morningIntention" placeholder="e.g., a focus block, a lunch break, sleep time..." maxlength="100">
+                    </div>
+                    <div class="routine-controls">
+                        <button class="btn-secondary btn-small" onclick="app.prevStep()">Back</button>
+                        <button class="btn-primary btn-small" onclick="app.nextStep()">Next</button>
+                    </div>
+                </div>
+
+                <div class="routine-step" data-routine="morning" data-step="5">
+                    <div class="routine-title">✓ You're all set</div>
+                    <div class="routine-summary" id="morningSummary"></div>
+                    <div class="motivation-message" id="motivationMessage"></div>
+                    <button class="btn-primary" onclick="app.completeRoutine()">Done</button>
+                </div>
+
+                <!-- Night Routine Steps -->
+                <div class="routine-step" data-routine="night" data-step="0">
+                    <div class="routine-title">Let's close the day 🌙</div>
+                    <div class="routine-subtitle">Reflect on today and prepare for tomorrow</div>
+                    <button class="btn-primary" onclick="app.nextStep()">Start Night Routine</button>
+                </div>
+
+                <div class="routine-step" data-routine="night" data-step="1">
+                    <div class="routine-title">Did you move today?</div>
+                    <div class="input-group">
+                        <div class="button-choices">
+                            <button class="choice-button" data-value="none" onclick="app.selectChoice(this, 'nightActivity')">None</button>
+                            <button class="choice-button" data-value="little" onclick="app.selectChoice(this, 'nightActivity')">A little</button>
+                            <button class="choice-button" data-value="some" onclick="app.selectChoice(this, 'nightActivity')">Some</button>
+                            <button class="choice-button" data-value="lots" onclick="app.selectChoice(this, 'nightActivity')">Lots</button>
+                        </div>
+                        <input type="hidden" id="nightActivity" value="">
+                    </div>
+                    <div class="input-group">
+                        <div class="slider-container">
+                            <div class="slider-label">Screen time today</div>
+                            <div class="gradient-slider-wrapper">
+                                <input type="range" id="screenTime" class="gradient-slider" min="0" max="12" value="6" step="0.5">
+                            </div>
+                            <div class="slider-values">
+                                <span>0h</span>
+                                <span class="slider-value" id="screenTimeValue">6h</span>
+                                <span>12h</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="routine-controls">
+                        <button class="btn-secondary btn-small" onclick="app.prevStep()">Back</button>
+                        <button class="btn-primary btn-small" onclick="app.nextStep()">Next</button>
+                    </div>
+                </div>
+
+                <div class="routine-step" data-routine="night" data-step="2">
+                    <div class="routine-title">Did you connect with anyone?</div>
+                    <div class="input-group">
+                        <div class="button-choices">
+                            <button class="choice-button" data-value="none" onclick="app.selectChoice(this, 'nightSocial')">None</button>
+                            <button class="choice-button" data-value="briefly" onclick="app.selectChoice(this, 'nightSocial')">Briefly</button>
+                            <button class="choice-button" data-value="meaningfully" onclick="app.selectChoice(this, 'nightSocial')">Meaningfully</button>
+                        </div>
+                        <input type="hidden" id="nightSocial" value="">
+                    </div>
+                    <div class="routine-controls">
+                        <button class="btn-secondary btn-small" onclick="app.prevStep()">Back</button>
+                        <button class="btn-primary btn-small" onclick="app.nextStep()">Next</button>
+                    </div>
+                </div>
+
+                <div class="routine-step" data-routine="night" data-step="3">
+                    <div class="routine-title">How are you feeling now?</div>
+                    <div class="input-group">
+                        <div class="slider-container">
+                            <div class="gradient-slider-wrapper">
+                                <input type="range" id="nightMood" class="gradient-slider" min="1" max="10" value="6" step="1">
+                            </div>
+                            <div class="slider-values">
+                                <span>Down</span>
+                                <span class="slider-value" id="nightMoodValue">6/10</span>
+                                <span>Great</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="button-choices">
+                            <button class="choice-button" data-value="yes" onclick="app.selectChoice(this, 'dayIdentity')">Yes</button>
+                            <button class="choice-button" data-value="mostly" onclick="app.selectChoice(this, 'dayIdentity')">Mostly</button>
+                            <button class="choice-button" data-value="not-really" onclick="app.selectChoice(this, 'dayIdentity')">Not really</button>
+                            <button class="choice-button" data-value="no" onclick="app.selectChoice(this, 'dayIdentity')">No</button>
+                        </div>
+                        <input type="hidden" id="dayIdentity" value="">
+                    </div>
+                    <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-light);">Did you feel like yourself today?</div>
+                    <div class="routine-controls">
+                        <button class="btn-secondary btn-small" onclick="app.prevStep()">Back</button>
+                        <button class="btn-primary btn-small" onclick="app.nextStep()">Next</button>
+                    </div>
+                </div>
+
+                <div class="routine-step" data-routine="night" data-step="4">
+                    <div class="routine-title">Tomorrow's intention</div>
+                    <div class="input-group">
+                        <input type="text" class="text-input" id="nightIntention" placeholder="Optional: one thing you want to focus on tomorrow" maxlength="100">
+                    </div>
+                    <div class="routine-controls">
+                        <button class="btn-secondary btn-small" onclick="app.prevStep()">Back</button>
+                        <button class="btn-primary btn-small" onclick="app.nextStep()">Next</button>
+                    </div>
+                </div>
+
+                <div class="routine-step" data-routine="night" data-step="5">
+                    <div class="routine-title">✓ Night routine done</div>
+                    <div class="routine-summary" id="nightSummary"></div>
+                    <div class="motivation-message" id="nightMotivationMessage"></div>
+                    <button class="btn-primary" onclick="app.completeRoutine()">Done</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div class="screen dashboard-screen" id="dashboardScreen">
+            <div class="dashboard-header">
+                <div>
+                    <div class="dashboard-title">Your Status</div>
+                    <div class="dashboard-date" id="dashboardDate"></div>
+                </div>
+            </div>
+
+            <div class="risk-section">
+                <div class="section-title">Burnout Risk Assessment</div>
+                <div class="risk-meter">
+                    <div class="risk-circle safe" id="dashboardRiskCircle">-</div>
+                    <div class="risk-level-label" id="riskLevelLabel">—</div>
+                    <div class="risk-label-dashboard" id="dashboardRiskLevel">—</div>
+                    <div class="risk-description" id="dashboardRiskDescription">—</div>
+                </div>
+            </div>
+
+            <div class="risk-section">
+                <div class="section-title">7-Day Signal Overview</div>
+                <div class="signal-grid">
+                    <div class="grid-header">
+                        <div class="grid-header-label grid-signal-label"></div>
+                        <div class="grid-header-label grid-day-label">Mon</div>
+                        <div class="grid-header-label grid-day-label">Tue</div>
+                        <div class="grid-header-label grid-day-label">Wed</div>
+                        <div class="grid-header-label grid-day-label">Thu</div>
+                        <div class="grid-header-label grid-day-label">Fri</div>
+                        <div class="grid-header-label grid-day-label">Sat</div>
+                        <div class="grid-header-label grid-day-label">Sun</div>
+                    </div>
+                    <div class="grid-rows" id="signalGrid"></div>
+                </div>
+            </div>
+
+            <div class="risk-section">
+                <div class="section-title">Key Findings</div>
+                <div class="findings-section" id="findings"></div>
+            </div>
+
+            <div class="risk-section">
+                <div class="section-title">Diagnosis & Actions</div>
+                <div class="insight-card" id="insight"></div>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div class="screen settings-screen" id="settingsScreen">
+            <h2 class="settings-title">Settings</h2>
+
+            <div class="settings-group">
+                <div class="settings-label">Appearance</div>
+                <div class="settings-description">Toggle dark mode for your preference.</div>
+                <button class="btn-primary" onclick="app.toggleDarkMode()" style="width: 100%;">
+                    <span id="darkModeToggleText">Enable Dark Mode</span>
+                </button>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-label">Reminders</div>
+                <div class="settings-description">Enable smart reminders for missed routines.</div>
+                <button class="btn-primary" onclick="app.toggleReminders()" style="width: 100%;">
+                    <span id="remindersToggleText">Enable Reminders</span>
+                </button>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-label">Data Management</div>
+                <div class="settings-description">Clear all data and reset the app to start fresh.</div>
+                <button class="btn-danger" onclick="app.showClearDataModal()">Clear All Data</button>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-label">Demo Mode</div>
+                <div class="settings-description">Load 21 days of realistic data showing a burnout arc.</div>
+                <button class="btn-primary" onclick="app.seedDemoData()">Load Demo Data</button>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <div class="modal-title" id="modalTitle">Confirm</div>
+                <div class="modal-text" id="modalText">Are you sure?</div>
+                <div class="modal-buttons">
+                    <button class="btn-secondary" onclick="app.closeModal()">Cancel</button>
+                    <button class="btn-danger" id="modalConfirm" onclick="app.confirmAction()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
