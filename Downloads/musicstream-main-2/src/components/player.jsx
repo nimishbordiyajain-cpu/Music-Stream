@@ -148,24 +148,26 @@ export default function Player({
             size={18}
           />
         </button>
-        <button
-          type="button"
-          className="player-ctrl-btn"
-          onClick={onToggleMute}
-          title={volume === 0 ? "Unmute" : "Mute"}
-          aria-label={volume === 0 ? "Unmute" : "Mute"}
-        >
-          <Icon d={volume === 0 ? Icons.volumeMute : Icons.volume} size={19} />
-        </button>
-        <input
-          type="range"
-          min={0}
-          max={100}
-          value={volume}
-          onChange={(e) => setVolume(Number(e.target.value))}
-          className="volume-slider"
-          aria-label="Volume"
-        />
+        <div className="player__volume-group">
+          <button
+            type="button"
+            className="player-ctrl-btn"
+            onClick={onToggleMute}
+            title={volume === 0 ? "Unmute" : "Mute"}
+            aria-label={volume === 0 ? "Unmute" : "Mute"}
+          >
+            <Icon d={volume === 0 ? Icons.volumeMute : Icons.volume} size={19} />
+          </button>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            className="volume-slider"
+            aria-label="Volume"
+          />
+        </div>
       </div>
     </footer>
   );
