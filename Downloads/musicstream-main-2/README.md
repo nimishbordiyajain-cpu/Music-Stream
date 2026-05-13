@@ -1,16 +1,60 @@
-# React + Vite
+Music Stream UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + Vite music streaming UI with player controls, playlists, search, subscription, lyrics, and download management.
 
-Currently, two official plugins are available:
+Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Home dashboard with featured tracks and artists
+- Search experience for tracks and artists
+- Like / unlike tracks and queue management
+- Playlists and playlist detail views
+- Audio player controls with shuffle, repeat, volume, and progress
+- Lyrics display and sleep timer
+- Subscription flow with premium/download gating
+- Login / onboarding / profile / settings screens
+- Local auth persistence via sessionStorage / localStorage
 
-## React Compiler
+Project structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `src/App.jsx` — main application state and route/view management
+- `src/components/` — reusable UI components like `player`, `sidebar`, `DownloadManager`, `LyricsDisplay`, and `SleepTimer`
+- `src/views/` — app screens such as `Homeview`, `SearchView`, `LikedView`, `QueueView`, `ArtistsView`, `PlaylistView`, `SubscriptionView`, `LoginView`, `ProfileView`, and `SettingsView`
+- `src/data.js` — app data sources for artists and tracks
+- `src/utils/downloadTrack.js` — download helper utility
 
-## Expanding the ESLint configuration
+Requirements
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js 18+ (or compatible)
+- npm
+
+Setup
+
+1. Install dependencies
+
+   ```bash
+   npm install
+   ```
+
+2. Start the development server
+
+   ```bash
+   npm run dev
+   ```
+
+3. Open the local URL shown by Vite (usually `http://localhost:5173`)
+
+Available scripts
+
+- `npm run dev` — start Vite development server
+- `npm run build` — create a production build
+- `npm run lint` — run ESLint on the project files
+- `npm run preview` — preview the production build locally
+
+ Notes
+
+- This project uses React 19 with Vite as the build tool.
+- The current implementation is a UI prototype and uses local data for tracks and playlists.
+- Subscription-related downloads are gated on the client side.
+ License
+
+This repository does not include a license file. Add one if you want to publish or share this project publicly.
